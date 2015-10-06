@@ -114,11 +114,12 @@ static void tcp_thread(void *param)
 		if (got_data) {
 			ResetEvent(pulled_data);
 			SetEvent(got_data);
-			WaitForSingleObject(pulled_data, INFINITE);
+			WaitForSingleObject(pulled_data, 1000); // Wait for 1 second
 		}
 	}
 
 endthread:
+	fprintf(stderr, "[rtltcpaccess] Exit TCP thread\n");
 	SetEvent(thread_finished);
 	_endthread();
 }
@@ -146,6 +147,8 @@ DWORD RTK_BDAFilterInit(HANDLE hnd)
 	struct command samprate_cmd = { 0x02, htonl(2048000) };
 	struct command testmode_cmd = { 0x07, htonl(1) };
 	WSADATA wsd;
+
+	exit_thread = FALSE;
 
 	r = WSAStartup(MAKEWORD(2,2), &wsd);
 
@@ -209,6 +212,8 @@ DWORD RTK_BDAFilterInit(HANDLE hnd)
 DWORD RTK_BDAFilterRelease(HANDLE hnd)
 {
 	exit_thread = TRUE;
+
+	fprintf(stderr, "[rtltcpaccess] RTK_BDAFilterRelease\n");
 
 	if (thread_finished)
 		WaitForSingleObject(thread_finished, INFINITE);

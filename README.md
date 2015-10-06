@@ -44,6 +44,7 @@ RTKDAB_Interface has two MessagePack TCP interfaces. A MessagePack client to tra
 **MessagePack client methods**
 
 "RTKDAB_Interface" will connect to a MessagePack TCP server and call the following methods.
+
 Method | Parameters | Return | Description
 ------ | ---------- | ------ | -----------
 MSCData | bin DataArray, int MSC data size, int SCID | None | Transmits the MSC data to a given sub-channel
@@ -55,6 +56,7 @@ MWFICData | N/A | N/A | Not implemented
 **MessagePack server methods**
 
 "RTKDAB_Interface" provides the following methods. A MessagePack TCP client can call it.
+
 Method | Parameters | Return | Description
 ------ | ---------- | ------ | -----------
 AddServiceCom | int ParaMode, int ID, int StartCU, int U_E, int Index, int EEPIdx, int CUNum, int PacketAddr, int FEC  | None | Adda a service componente

@@ -101,6 +101,7 @@ private:
 	void* RTL283XACCESS_dllHandle;
 
 	bool isRTKDABdllLoaded;
+	bool isOpened;
 
 	// Pointers to the RTKDAB.dll funtions
 	RTDAB_OpenDevice_t RTKDAB_OpenDevice;

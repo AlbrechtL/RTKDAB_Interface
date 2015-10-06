@@ -41,6 +41,7 @@ CRTKDABLoader::CRTKDABLoader(CRTKDABCallBacks &RTKDABCallBacks)
 	RTKDAB_dllHandle = NULL;
 	RTL283XACCESS_dllHandle = NULL;
 	isRTKDABdllLoaded = false;
+	isOpened = false;
 
 	// RTKDAB.dll functions pointer 
 	RTKDAB_OpenDevice = NULL;
@@ -182,11 +183,16 @@ int CRTKDABLoader::OpenDevice(void)
 {
 	int retVal = -1;
 
+	fprintf(stderr, "Called OpenDevice()\n");
+
 	if(NULL != RTKDAB_OpenDevice && isRTKDABdllLoaded)
 	{
 		retVal = RTKDAB_OpenDevice();
-	}
 
+		if (retVal == 1)
+			isOpened = true;
+	}
+ 
 	return retVal;
 }
 
@@ -194,10 +200,14 @@ int CRTKDABLoader::CloseDevice(void)
 {
 	int retVal = -1;
 
+	fprintf(stderr, "Called CloseDevice()\n");
 	if (NULL != RTKDAB_CloseDevice && isRTKDABdllLoaded)
 	{
 		retVal = RTKDAB_CloseDevice();
 	}
+
+	// No matter what. Mark the device as closed
+	isOpened = false;
 
 	return retVal;
 }
@@ -206,7 +216,8 @@ int CRTKDABLoader::Start(void)
 {
 	int retVal = -1;
 
-	if (NULL != RTDAB_Start && isRTKDABdllLoaded)
+	fprintf(stderr, "Called Start()\n");
+	if (NULL != RTDAB_Start && isRTKDABdllLoaded && isOpened)
 	{
 		retVal = RTDAB_Start();
 	}
@@ -218,7 +229,8 @@ int CRTKDABLoader::Stop(void)
 {
 	int retVal = -1;
 
-	if (NULL != RTDAB_Stop && isRTKDABdllLoaded)
+	fprintf(stderr, "Called Stop()\n");
+	if (NULL != RTDAB_Stop && isRTKDABdllLoaded && isOpened)
 	{
 		retVal = RTDAB_Stop();
 	}
@@ -230,7 +242,7 @@ int CRTKDABLoader::DebugCMD(void)
 {
 	int retVal = -1;
 
-	if (NULL != RTDAB_DebugCMD && isRTKDABdllLoaded)
+	if (NULL != RTDAB_DebugCMD && isRTKDABdllLoaded && isOpened)
 	{
 		retVal = RTDAB_DebugCMD();
 	}
@@ -242,7 +254,8 @@ int CRTKDABLoader::SetFreqAndBW(int Frequeny_kHz)
 {
 	int retVal = -1;
 
-	if (NULL != RTDAB_SetFreqAndBW && isRTKDABdllLoaded)
+	fprintf(stderr, "Called SetFreqAndBW()\n");
+	if (NULL != RTDAB_SetFreqAndBW && isRTKDABdllLoaded && isOpened)
 	{
 		retVal = RTDAB_SetFreqAndBW(Frequeny_kHz);
 	}
@@ -254,7 +267,7 @@ int CRTKDABLoader::AddServiceCom(int ParaMode, int ID, int StartCU, int U_E, int
 {
 	int retVal = -1;
 
-	if (NULL != RTDAB_AddServiceCom && isRTKDABdllLoaded)
+	if (NULL != RTDAB_AddServiceCom && isRTKDABdllLoaded && isOpened)
 	{
 		retVal = RTDAB_AddServiceCom(ParaMode, ID, StartCU, U_E, Index, EEPIdx, CUNum, PacketAddr, FEC);
 	}
@@ -266,7 +279,7 @@ int CRTKDABLoader::ChangeSCOrg(void)
 {
 	int retVal = -1;
 
-	if (NULL != RTDAB_ChangeSCOrg && isRTKDABdllLoaded)
+	if (NULL != RTDAB_ChangeSCOrg && isRTKDABdllLoaded && isOpened)
 	{
 		retVal = RTDAB_ChangeSCOrg();
 	}
@@ -278,7 +291,7 @@ int CRTKDABLoader::DelServiceCom(int ParaMode, int ID, int PacketAddr)
 {
 	int retVal = -1;
 
-	if (NULL != RTDAB_DelServiceCom && isRTKDABdllLoaded)
+	if (NULL != RTDAB_DelServiceCom && isRTKDABdllLoaded && isOpened)
 	{
 		retVal = RTDAB_DelServiceCom(ParaMode, ID, PacketAddr);
 	}
@@ -291,7 +304,7 @@ int CRTKDABLoader::GetFreqAndBW(void)
 	int retVal = -1;
 	int FreqAndBW = -1;
 
-	if (NULL != RTDAB_GetFreqAndBW && isRTKDABdllLoaded)
+	if (NULL != RTDAB_GetFreqAndBW && isRTKDABdllLoaded && isOpened)
 	{
 		// ToDo: Add retVal analysis
 		retVal = RTDAB_GetFreqAndBW(&FreqAndBW);
@@ -305,7 +318,7 @@ int CRTKDABLoader::GetSignalQuality(void)
 	int retVal = -1;
 	int SignalQuality = 1;
 
-	if (NULL != RTDAB_GetSignalQuality && isRTKDABdllLoaded)
+	if (NULL != RTDAB_GetSignalQuality && isRTKDABdllLoaded && isOpened)
 	{
 		// ToDo: Add retVal analysis
 		retVal = RTDAB_GetSignalQuality(&SignalQuality);
@@ -319,7 +332,7 @@ int CRTKDABLoader::GetSignalLock(void)
 	int retVal = -1;
 	int SignalLock = -1;
 
-	if (NULL != RTDAB_GetSignalLock && isRTKDABdllLoaded)
+	if (NULL != RTDAB_GetSignalLock && isRTKDABdllLoaded && isOpened)
 	{
 		// ToDo: Add retVal analysis
 		retVal = RTDAB_GetSignalLock(&SignalLock);
@@ -333,7 +346,7 @@ int CRTKDABLoader::GetSignalPresent(void)
 	int retVal = -1;
 	int SignalPresent = -1;
 
-	if (NULL != RTDAB_GetSignalPresent && isRTKDABdllLoaded)
+	if (NULL != RTDAB_GetSignalPresent && isRTKDABdllLoaded && isOpened)
 	{
 		// ToDo: Add retVal analysis
 		retVal = RTDAB_GetSignalPresent(&SignalPresent);
@@ -347,7 +360,7 @@ int CRTKDABLoader::GetSignalStrength(void)
 	int retVal = -1;
 	int SignalStrength = -1;
 
-	if (NULL != RTDAB_GetSignalStrength && isRTKDABdllLoaded)
+	if (NULL != RTDAB_GetSignalStrength && isRTKDABdllLoaded && isOpened)
 	{
 		// ToDo: Add retVal analysis
 		retVal = RTDAB_GetSignalStrength(&SignalStrength);
@@ -361,7 +374,7 @@ int CRTKDABLoader::GetTunerRange(void)
 	int retVal = -1;
 	int TunerRange = -1;
 
-	if (NULL != RTDAB_GetTunerRange && isRTKDABdllLoaded)
+	if (NULL != RTDAB_GetTunerRange && isRTKDABdllLoaded && isOpened)
 	{
 		// ToDo: Add retVal analysis
 		retVal = RTDAB_GetTunerRange(&TunerRange);

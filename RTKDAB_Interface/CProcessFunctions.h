@@ -42,6 +42,7 @@ public:
 
 	virtual void Execute(anyrpc::Value& params, anyrpc::Value& result) = 0;
 
+
 protected:
 	CRTKDABLoader* RTKDABLoader;
 };
@@ -66,6 +67,86 @@ class CSetFreq : public CFunctionCallback
 {
 public:
 	CSetFreq(std::string const& name, std::string const& help, bool deleteOnRemove, CRTKDABLoader* RTKDABLoader_) :CFunctionCallback(name, help, deleteOnRemove, RTKDABLoader_) {};
+
+	void Execute(anyrpc::Value& params, anyrpc::Value& result);
+};
+
+class COpenDevice : public CFunctionCallback
+{
+public:
+	COpenDevice(std::string const& name, std::string const& help, bool deleteOnRemove, CRTKDABLoader* RTKDABLoader_) :CFunctionCallback(name, help, deleteOnRemove, RTKDABLoader_) {};
+
+	void Execute(anyrpc::Value& params, anyrpc::Value& result);
+};
+
+class CCloseDevice : public CFunctionCallback
+{
+public:
+	CCloseDevice(std::string const& name, std::string const& help, bool deleteOnRemove, CRTKDABLoader* RTKDABLoader_) :CFunctionCallback(name, help, deleteOnRemove, RTKDABLoader_) {};
+
+	void Execute(anyrpc::Value& params, anyrpc::Value& result);
+};
+
+class CStart : public CFunctionCallback
+{
+public:
+	CStart(std::string const& name, std::string const& help, bool deleteOnRemove, CRTKDABLoader* RTKDABLoader_) :CFunctionCallback(name, help, deleteOnRemove, RTKDABLoader_) {};
+
+	void Execute(anyrpc::Value& params, anyrpc::Value& result);
+};
+
+class CStop : public CFunctionCallback
+{
+public:
+	CStop(std::string const& name, std::string const& help, bool deleteOnRemove, CRTKDABLoader* RTKDABLoader_) :CFunctionCallback(name, help, deleteOnRemove, RTKDABLoader_) {};
+
+	void Execute(anyrpc::Value& params, anyrpc::Value& result);
+};
+
+class CChangeSCOrg : public CFunctionCallback
+{
+public:
+	CChangeSCOrg(std::string const& name, std::string const& help, bool deleteOnRemove, CRTKDABLoader* RTKDABLoader_) :CFunctionCallback(name, help, deleteOnRemove, RTKDABLoader_) {};
+
+	void Execute(anyrpc::Value& params, anyrpc::Value& result);
+};
+
+class CGetFreqAndBW : public CFunctionCallback
+{
+public:
+	CGetFreqAndBW(std::string const& name, std::string const& help, bool deleteOnRemove, CRTKDABLoader* RTKDABLoader_) :CFunctionCallback(name, help, deleteOnRemove, RTKDABLoader_) {};
+
+	void Execute(anyrpc::Value& params, anyrpc::Value& result);
+};
+
+class CGetSignalQuality : public CFunctionCallback
+{
+public:
+	CGetSignalQuality(std::string const& name, std::string const& help, bool deleteOnRemove, CRTKDABLoader* RTKDABLoader_) :CFunctionCallback(name, help, deleteOnRemove, RTKDABLoader_) {};
+
+	void Execute(anyrpc::Value& params, anyrpc::Value& result);
+};
+
+class CGetSignalLock : public CFunctionCallback
+{
+public:
+	CGetSignalLock(std::string const& name, std::string const& help, bool deleteOnRemove, CRTKDABLoader* RTKDABLoader_) :CFunctionCallback(name, help, deleteOnRemove, RTKDABLoader_) {};
+
+	void Execute(anyrpc::Value& params, anyrpc::Value& result);
+};
+
+class CGetSignalPresent : public CFunctionCallback
+{
+public:
+	CGetSignalPresent(std::string const& name, std::string const& help, bool deleteOnRemove, CRTKDABLoader* RTKDABLoader_) :CFunctionCallback(name, help, deleteOnRemove, RTKDABLoader_) {};
+
+	void Execute(anyrpc::Value& params, anyrpc::Value& result);
+};
+
+class CGetSignalStrength : public CFunctionCallback
+{
+public:
+	CGetSignalStrength(std::string const& name, std::string const& help, bool deleteOnRemove, CRTKDABLoader* RTKDABLoader_) :CFunctionCallback(name, help, deleteOnRemove, RTKDABLoader_) {};
 
 	void Execute(anyrpc::Value& params, anyrpc::Value& result);
 };

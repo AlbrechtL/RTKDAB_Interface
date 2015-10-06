@@ -28,9 +28,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "CRTKDABLoader.h"
 
 #define MESSAGEPACK_SERVER_PORT 8778
-#define MESSAGEPACK_CLIENT_IPADDRESS "10.10.1.123"
+//#define MESSAGEPACK_CLIENT_IPADDRESS "10.10.1.120"
+#define MESSAGEPACK_CLIENT_IPADDRESS "127.0.0.1"
 #define MESSAGEPACK_CLIENT_PORT 9000
-#define RTL_TCP_IPADDRESS "10.10.1.123"
+//#define RTL_TCP_IPADDRESS "10.10.1.120"
+#define RTL_TCP_IPADDRESS "127.0.0.1"
 #define RTL_TCP_PORT 1234
 
 using namespace std;
@@ -53,16 +55,16 @@ int main(void)
 	// Load the RTKDAB.dll und connect to "rtl_tcp" with the given IP address and port
 	RTKDABLoader.Load(RTL_TCP_IPADDRESS, RTL_TCP_PORT);
 	//RTKDABLoader.Load();
-	RTKDABLoader.OpenDevice();
+	/*RTKDABLoader.OpenDevice();
 	RTKDABLoader.SetFreqAndBW(222064); // Channel 11D
-	RTKDABLoader.Start();
+	RTKDABLoader.Start();*/
 	
 	char ch = 0;
 	while(ch != 'q')
 	{
 		ch = _getch();
 
-		if (ch == 's')
+		/*if (ch == 's')
 		{
 			SignalQuality = RTKDABLoader.GetSignalQuality();
 			SignalLock = RTKDABLoader.GetSignalLock();
@@ -87,6 +89,26 @@ int main(void)
 			// int ParaMode, int ID, int StartCU, int U_E, int Index, int EEPIdx, int CUNum, int PacketAddr, int FEC
 			// WDR2 at 222064 kHz
 			RTKDABLoader.AddServiceCom(0, 7, 360, 1, 0, 2, 72, 0, 2);
+		}*/
+
+		if (ch == 'c')
+		{
+			RTKDABLoader.CloseDevice();
+		}
+
+		if (ch == 's')
+		{
+			RTKDABLoader.Stop();
+		}
+
+		if (ch == 'o')
+		{
+			RTKDABLoader.OpenDevice();
+		}
+
+		if (ch == 'd')
+		{
+			RTKDABLoader.Start();
 		}
 	}
 

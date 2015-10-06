@@ -29,13 +29,23 @@ CProcessFunctions::CProcessFunctions(int Port, CRTKDABLoader* RTKDABLoader)
 	// Bind to port
 	MessagePack_Server->BindAndListen(Port);
 
-	// Add the method calls
+	// Get the MethodManager
 	MethodManager = MessagePack_Server->GetMethodManager();
 
-	// Add callback methods
+	// Add callback objects
 	MethodManager->AddMethod(new CAddServiceCom("AddServiceCom", "No help available", true, RTKDABLoader));
 	MethodManager->AddMethod(new CDelServiceCom("DelServiceCom", "No help available", true, RTKDABLoader));
 	MethodManager->AddMethod(new CSetFreq("SetFreq", "No help available", true, RTKDABLoader));
+	MethodManager->AddMethod(new COpenDevice("OpenDevice", "No help available", true, RTKDABLoader));
+	MethodManager->AddMethod(new CCloseDevice("CloseDevice", "No help available", true, RTKDABLoader));
+	MethodManager->AddMethod(new CStart("Start", "No help available", true, RTKDABLoader));
+	MethodManager->AddMethod(new CStop("Stop", "No help available", true, RTKDABLoader));
+	MethodManager->AddMethod(new CChangeSCOrg("ChangeSCOrg", "No help available", true, RTKDABLoader));
+	MethodManager->AddMethod(new CGetFreqAndBW("GetFreqAndBW", "No help available", true, RTKDABLoader));
+	MethodManager->AddMethod(new CGetSignalQuality("GetSignalQuality", "No help available", true, RTKDABLoader));
+	MethodManager->AddMethod(new CGetSignalLock("GetSignalLock", "No help available", true, RTKDABLoader));
+	MethodManager->AddMethod(new CGetSignalPresent("GetSignalPresent", "No help available", true, RTKDABLoader));
+	MethodManager->AddMethod(new CGetSignalStrength("GetSignalStrength", "No help available", true, RTKDABLoader));
 
 	MessagePack_Server->StartThread();
 }
@@ -123,4 +133,66 @@ void CSetFreq::Execute(anyrpc::Value& params, anyrpc::Value& result)
 
 		RTKDABLoader->SetFreqAndBW(Frequency);
 	}
+}
+
+void COpenDevice::Execute(anyrpc::Value& params, anyrpc::Value& result)
+{
+	RTKDABLoader->OpenDevice();
+}
+
+void CCloseDevice::Execute(anyrpc::Value& params, anyrpc::Value& result)
+{
+	RTKDABLoader->CloseDevice();
+}
+
+void CStart::Execute(anyrpc::Value& params, anyrpc::Value& result)
+{
+	RTKDABLoader->Start();
+}
+
+void CStop::Execute(anyrpc::Value& params, anyrpc::Value& result)
+{
+	RTKDABLoader->Stop();
+}
+
+void CChangeSCOrg::Execute(anyrpc::Value& params, anyrpc::Value& result)
+{
+	/* Not implemented */
+}
+
+void CGetFreqAndBW::Execute(anyrpc::Value& params, anyrpc::Value& result)
+{
+	/* Not implemented */
+}
+
+void CGetSignalQuality::Execute(anyrpc::Value& params, anyrpc::Value& result)
+{
+	int SignalQuality = 0;
+
+	SignalQuality = RTKDABLoader->GetSignalQuality();
+	result.SetInt(SignalQuality);
+}
+
+void CGetSignalLock::Execute(anyrpc::Value& params, anyrpc::Value& result)
+{
+	int GetSignalLock = 0;
+
+	GetSignalLock = RTKDABLoader->GetSignalLock();
+	result.SetInt(GetSignalLock);
+}
+
+void CGetSignalPresent::Execute(anyrpc::Value& params, anyrpc::Value& result)
+{
+	int GetSignalPresent = 0;
+
+	GetSignalPresent = RTKDABLoader->GetSignalPresent();
+	result.SetInt(GetSignalPresent);
+}
+
+void CGetSignalStrength::Execute(anyrpc::Value& params, anyrpc::Value& result)
+{
+	int GetSignalStrength = 0;
+
+	GetSignalStrength = RTKDABLoader->GetSignalStrength();
+	result.SetInt(GetSignalStrength);
 }

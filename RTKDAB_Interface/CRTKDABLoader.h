@@ -52,6 +52,7 @@ typedef int(__cdecl* RTDAB_SetMWFICCallBack_t)(void* CallBackFcnPtr); // Not tes
 
 // Define the RTL283XACCESS.dll function prototype
 typedef int(__cdecl* RTL283XACCESS_SetIPAddressAndPort_t)(const char* IPAddress, uint32_t Port);
+typedef int(__cdecl* RTL283XACCESS_GetConnectionState_t)(void);
 
 // This is a singleton 
 class CRTKDABLoader
@@ -131,5 +132,6 @@ private:
 
 	//Pointers to the RTL283XACCESS.dll funtions
 	RTL283XACCESS_SetIPAddressAndPort_t RTL283XACCESS_SetIPAddressAndPort;
+	RTL283XACCESS_GetConnectionState_t RTL283XACCESS_GetConnectionState;
 };
 

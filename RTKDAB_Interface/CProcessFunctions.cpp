@@ -98,6 +98,7 @@ void CAddServiceCom::Execute(anyrpc::Value& params, anyrpc::Value& result)
 
 		RTKDABLoader->AddServiceCom(ParaMode, ID, StartCU, U_E, Index, EEPIdx, CUNum, PacketAddr, FEC);
 	}
+	result.SetNull();
 }
 
 void CDelServiceCom::Execute(anyrpc::Value& params, anyrpc::Value& result)
@@ -119,6 +120,7 @@ void CDelServiceCom::Execute(anyrpc::Value& params, anyrpc::Value& result)
 
 		RTKDABLoader->DelServiceCom(ParaMode, ID, PacketAddr);
 	}
+	result.SetNull();
 }
 
 
@@ -133,26 +135,31 @@ void CSetFreq::Execute(anyrpc::Value& params, anyrpc::Value& result)
 
 		RTKDABLoader->SetFreqAndBW(Frequency);
 	}
+	result.SetNull();
 }
 
 void COpenDevice::Execute(anyrpc::Value& params, anyrpc::Value& result)
 {
 	RTKDABLoader->OpenDevice();
+	result.SetNull();
 }
 
 void CCloseDevice::Execute(anyrpc::Value& params, anyrpc::Value& result)
 {
 	RTKDABLoader->CloseDevice();
+	result.SetNull();
 }
 
 void CStart::Execute(anyrpc::Value& params, anyrpc::Value& result)
 {
 	RTKDABLoader->Start();
+	result.SetNull();
 }
 
 void CStop::Execute(anyrpc::Value& params, anyrpc::Value& result)
 {
 	RTKDABLoader->Stop();
+	result.SetNull();
 }
 
 void CChangeSCOrg::Execute(anyrpc::Value& params, anyrpc::Value& result)

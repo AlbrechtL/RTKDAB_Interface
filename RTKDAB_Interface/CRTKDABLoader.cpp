@@ -71,6 +71,7 @@ CRTKDABLoader::CRTKDABLoader(CRTKDABCallBacks &RTKDABCallBacks)
 
 	// RTL283XACCESS.dll functions pointer 
 	RTL283XACCESS_SetIPAddressAndPort = NULL;
+	RTL283XACCESS_GetConnectionState = NULL;
 }
 
 CRTKDABLoader::~CRTKDABLoader()
@@ -103,6 +104,7 @@ bool CRTKDABLoader::Load(std::string rtl_tcp_IPAddress, uint32_t rtl_tcp_Port)
 		// Set the rtl_tcp IP address and port
 		// RTKDAB.dll will load this DLL as well but the DLL will only be loaded once. So it is possible to set the IP address and port.
 		RTL283XACCESS_SetIPAddressAndPort = (RTL283XACCESS_SetIPAddressAndPort_t) GetProcAddress((HINSTANCE)RTL283XACCESS_dllHandle, "SetIPAddressAndPort");
+		RTL283XACCESS_GetConnectionState = (RTL283XACCESS_GetConnectionState_t)GetProcAddress((HINSTANCE)RTL283XACCESS_dllHandle, "GetConnectionState");
 
 		if (RTL283XACCESS_SetIPAddressAndPort)
 			RTL283XACCESS_SetIPAddressAndPort(rtl_tcp_IPAddress.c_str(), rtl_tcp_Port);
@@ -204,6 +206,15 @@ int CRTKDABLoader::CloseDevice(void)
 	if (NULL != RTKDAB_CloseDevice && isRTKDABdllLoaded)
 	{
 		retVal = RTKDAB_CloseDevice();
+
+		if (RTL283XACCESS_GetConnectionState)
+		{
+			while (RTL283XACCESS_GetConnectionState() == 1)
+			{
+				fprintf(stderr, "Waiting for closed connection\n");
+				Sleep(100); // Wait 100 ms
+			}
+		}
 	}
 
 	// No matter what. Mark the device as closed

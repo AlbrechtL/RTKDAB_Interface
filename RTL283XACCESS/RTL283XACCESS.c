@@ -46,6 +46,7 @@ static HANDLE pulled_data = NULL;
 static HANDLE thread_finished = NULL;
 static int exit_thread = FALSE;
 static int enable_testmode = FALSE;
+static int isConnected = FALSE;
 static SOCKET sock;
 
 #ifndef __WINE__
@@ -95,11 +96,13 @@ static void tcp_thread(void *param)
 {
 	int received_bytes, bytes_left, index;
 
+	isConnected = TRUE;
+
 	while (!exit_thread) {
 		bytes_left = BUFF_SIZE;
 		index = 0;
 
-		while (bytes_left > 0) {
+		while (bytes_left > 0) {		
 			received_bytes = recv(sock, (char *)&buff[index], bytes_left, 0);
 
 			if (received_bytes == -1 && !is_error(EAGAIN)) {
@@ -122,6 +125,7 @@ endthread:
 	fprintf(stderr, "[rtltcpaccess] Exit TCP thread\n");
 	SetEvent(thread_finished);
 	_endthread();
+	exit_thread = FALSE;
 }
 
 BOOL WINAPI DllMain(HINSTANCE hinst, DWORD reason, LPVOID reserved)
@@ -148,7 +152,11 @@ DWORD RTK_BDAFilterInit(HANDLE hnd)
 	struct command testmode_cmd = { 0x07, htonl(1) };
 	WSADATA wsd;
 
-	exit_thread = FALSE;
+	if (exit_thread == TRUE)
+	{
+		fprintf(stderr, "[rtltcpaccess] TCP thread is still exiting. Aborting ... %d\n", exit_thread);
+		return FALSE;
+	}
 
 	r = WSAStartup(MAKEWORD(2,2), &wsd);
 
@@ -225,6 +233,10 @@ DWORD RTK_BDAFilterRelease(HANDLE hnd)
 
 	WSACleanup();
 
+	exit_thread = FALSE;
+	isConnected = FALSE;
+
+	fprintf(stderr, "[rtltcpaccess] End RTK_BDAFilterRelease\n");
 	return TRUE;
 }
 
@@ -317,4 +329,9 @@ int SetIPAddressAndPort(char* IPAddress, uint32_t Port)
 	port = Port;
 
 	return 0;
+}
+
+int GetConnectionState(void)
+{
+	return isConnected;
 }

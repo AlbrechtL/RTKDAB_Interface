@@ -46,3 +46,4 @@ RTL283XACCESSDLL_API DWORD RTK_Set_Frequency(DWORD freq);
 
 /* Options for this dll */
 RTL283XACCESSDLL_API int SetIPAddressAndPort(char* IPAddress, uint32_t Port);
+RTL283XACCESSDLL_API int GetConnectionState(void);

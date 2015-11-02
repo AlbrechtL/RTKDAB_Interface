@@ -11,10 +11,6 @@ To goal is to use this library together with open source DAB software and [RTL28
 
 Maybe because it is based on the ["Fraunhofer DAB/DRM MultimediaPlayer"](http://www.iis.fraunhofer.de/en/ff/amm/prod/digirundfunk/digirundf/dabdrmmplayer.html) where a lot of Fraunhofer IIS engineers and researches work on this library.
 
-**Where do you know the "RTKDAB.dll" API from?**
-
-I know it from reverse engineering. I didn't had access to the Realtek SDK or to non-public Fraunhofer IIS documentation.
-
 Usage
 -----
 "RTKDAB_Interface" uses the program "rtl_tcp" to read data from the RTL2832U dongles. You have to install "rtl_tcp" first and to start it. For Ubuntu you can do:
